@@ -21,9 +21,16 @@ def ping(host)
   end
 end
 
+ips = []
+puts "Scanning the network"
 for i in 1..255
-  puts "scanning..."
+  puts "Check : 192.168.1.#{i}"
   if ping("192.168.1.#{i}")
     puts "192.168.1.#{i} is used"
+    ips.push("192.168.1.#{i}")
   end
 end
+
+puts "============================================"
+puts "Those ip seems to be used on your network : "
+puts ips
