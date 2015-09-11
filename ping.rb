@@ -23,7 +23,7 @@ end
 
 ips = []
 puts "Scanning the network"
-for i in 1..20
+for i in 1..255
   puts "Check : 192.168.1.#{i}"
   if ping("192.168.1.#{i}")
     puts "192.168.1.#{i} is used"
