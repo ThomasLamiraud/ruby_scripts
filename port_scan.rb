@@ -42,7 +42,12 @@ def open_port(host, port, tab_port)
   raw = Socket.sockaddr_in(port, host)
   # puts "#{port} open." if sock.connect(raw)
   if sock.connect(raw)
-    tab_port.push(H_ports.select{|port_number, service| port_number["port"] == port.to_s })
+    # Check if port is known in the hash 
+    if H_ports.any? {|h| h["port"] == port.to_s}
+      tab_port.push(H_ports.select{|port_number, service| port_number["port"] == port.to_s })
+    else
+      tab_port.push([{"port" => port.to_s, "service" => "random service"}])
+    end
   end
 
 rescue (Errno::ECONNREFUSED)
@@ -56,7 +61,8 @@ re = "^(192\.168\.([0,1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([0,1]?[0-9]{1,2}|2[0-
 # Begining of the program
 puts "Port Scanner"
 puts "IP Address to scan: "
-adress = gets.chomp
+# adress = gets.chomp
+adress = "192.168.1.11"
 
 if adress.match re
   tab_port = []
@@ -71,6 +77,7 @@ if adress.match re
       open_port(adress, i, tab_port)
     end
 
+    puts tab_port.count
     tab_port.each do |data|
       puts "Port : #{data.first["port"]} ; service :  #{data.first["service"]} OPEN "
     end
